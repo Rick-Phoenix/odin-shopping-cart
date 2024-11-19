@@ -3,17 +3,18 @@ import { Link } from "react-router-dom";
 import { BsCartPlus } from "react-icons/bs";
 import { BsCartCheck } from "react-icons/bs";
 
-const ProductCard = memo(function Product({ data, addToCart, removeFromCart }) {
-  const [isInCart, setIsInCart] = useState(false);
+const ProductCard = memo(function Product({
+  data,
+  addToCart,
+  removeFromCart,
+  cart,
+}) {
+  const isInCart = cart.some((product) => product.id === data.id);
 
   function handleCartAction(e) {
+    console.log(isInCart);
     e.preventDefault();
-    let newValue;
-    setIsInCart((current) => {
-      newValue = !current;
-      return newValue;
-    });
-    if (newValue) addToCart(data);
+    if (!isInCart) return addToCart({ ...data, amount: 1 });
     else removeFromCart(data);
   }
 

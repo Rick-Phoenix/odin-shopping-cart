@@ -10,6 +10,10 @@ const App = memo(function App() {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
+  useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       const response = await fetch(`https://fakestoreapi.com/products/`);
@@ -34,11 +38,32 @@ const App = memo(function App() {
   }, [sortOrder]);
 
   const addToCart = useCallback((item) => {
-    setCart((cart) => [...cart].concat(item));
+    setCart((cart) => {
+      if (cart.length > 0) return [...cart].concat([item]);
+      else return [item];
+    });
   }, []);
 
   const removeFromCart = useCallback((item) => {
     setCart((cart) => [...cart].filter((i) => i.id !== item.id));
+  }, []);
+
+  const decreaseCartAmount = useCallback((item) => {
+    setCart((cart) => {
+      const cartCopy = [...cart];
+      const itemIndex = cartCopy.indexOf(item);
+      cartCopy[itemIndex].amount = cartCopy[itemIndex].amount - 1;
+      return cartCopy;
+    });
+  }, []);
+
+  const increaseCartAmount = useCallback((item) => {
+    setCart((cart) => {
+      const cartCopy = [...cart];
+      const itemIndex = cartCopy.indexOf(item);
+      cartCopy[itemIndex].amount = cartCopy[itemIndex].amount + 1;
+      return cartCopy;
+    });
   }, []);
 
   if (loading) return <div>Loading Products...</div>;
@@ -51,7 +76,15 @@ const App = memo(function App() {
         </Link>
       </nav>
       <Outlet
-        context={{ products, handleSort, addToCart, removeFromCart, cart }}
+        context={{
+          products,
+          handleSort,
+          addToCart,
+          removeFromCart,
+          cart,
+          decreaseCartAmount,
+          increaseCartAmount,
+        }}
       />
     </>
   );

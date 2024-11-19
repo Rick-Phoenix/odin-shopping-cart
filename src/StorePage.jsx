@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard";
 import { memo } from "react";
 
 const StorePage = memo(function StorePage() {
-  const { products, handleSort, addToCart, removeFromCart } =
+  const { products, handleSort, addToCart, removeFromCart, cart } =
     useOutletContext();
   return (
     <main>
@@ -18,6 +18,7 @@ const StorePage = memo(function StorePage() {
               addToCart={addToCart}
               removeFromCart={removeFromCart}
               key={product.id}
+              cart={cart}
             />
           );
         })}
