@@ -36,7 +36,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -70,5 +70,69 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+.productList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 20vw);
+  grid-auto-rows: 40vh;
+  gap: 1rem;
+
+  .productCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: transform 0.5s;
+
+    &:hover {
+      background-color: gray;
+      transform: scale(1.1);
+    }
+
+    .price {
+    }
+
+    img {
+      object-fit: contain;
+      min-height: 0;
+      width: 100%;
+    }
+  }
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+
+  li {
+    list-style: none;
+  }
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+main {
+  padding: 3rem;
+  padding-top: 0;
+}
+
+.productPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 5rem 10rem;
+
+  img {
+    height: 200px;
   }
 }
