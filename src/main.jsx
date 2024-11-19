@@ -4,13 +4,22 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
 import ProductPage from "../ProductPage.jsx";
+import StorePage from "./StorePage.jsx";
+import CartPage from "../CartPage.jsx";
+
+const errorElement = <h1>Oopsie! That page is not available yet!</h1>;
 
 const routes = [
   {
     path: "/",
     element: <App />,
+    children: [
+      { path: "/", element: <StorePage />, index: true },
+      { path: "/products/:id", element: <ProductPage /> },
+      { path: "cart", element: <CartPage /> },
+    ],
+    errorElement: errorElement,
   },
-  { path: "/:id", element: <ProductPage /> },
 ];
 
 const router = createBrowserRouter(routes, {

@@ -1,11 +1,13 @@
-import { memo, useEffect, useMemo, useState } from "react";
-import Product from "./Product";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import ProductCard from "./ProductCard";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { Link, Outlet } from "react-router-dom";
 
 const App = memo(function App() {
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState("asc");
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -19,35 +21,38 @@ const App = memo(function App() {
     fetchProducts();
   }, []);
 
-  function handleSort() {
+  const handleSort = useCallback(() => {
     setSortOrder(() => {
       const newValue = sortOrder === "asc" ? "desc" : "asc";
-      setProducts(() => {
+      setProducts((products) => {
         return [...products].sort((a, b) =>
           newValue === "asc" ? a.price - b.price : b.price - a.price
         );
       });
       return newValue;
     });
-  }
+  }, [sortOrder]);
+
+  const addToCart = useCallback((item) => {
+    setCart((cart) => [...cart].concat(item));
+  }, []);
+
+  const removeFromCart = useCallback((item) => {
+    setCart((cart) => [...cart].filter((i) => i.id !== item.id));
+  }, []);
 
   if (loading) return <div>Loading Products...</div>;
 
   return (
     <>
       <nav>
-        <AiOutlineShoppingCart />
+        <Link to={"/cart"}>
+          <AiOutlineShoppingCart />
+        </Link>
       </nav>
-      <main>
-        <nav>
-          <button onClick={handleSort}>Sort By</button>
-        </nav>
-        <ul className="productList">
-          {products.map((product) => {
-            return <Product data={product} key={product.id} />;
-          })}
-        </ul>
-      </main>
+      <Outlet
+        context={{ products, handleSort, addToCart, removeFromCart, cart }}
+      />
     </>
   );
 });
