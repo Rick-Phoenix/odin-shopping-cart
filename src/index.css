@@ -166,6 +166,12 @@ main {
   flex-direction: column;
   padding: 5rem 10rem;
 
+  .buttonWrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
   img {
     height: 200px;
   }
@@ -225,4 +231,11 @@ main {
       }
     }
   }
+}
+
+nav,
+nav button {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }

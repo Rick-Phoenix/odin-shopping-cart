@@ -6,12 +6,8 @@ import { Link, Outlet } from "react-router-dom";
 const App = memo(function App() {
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrder, setSortOrder] = useState("desc");
   const [cart, setCart] = useState([]);
-
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,19 +46,21 @@ const App = memo(function App() {
 
   const decreaseCartAmount = useCallback((item) => {
     setCart((cart) => {
-      const cartCopy = [...cart];
-      const itemIndex = cartCopy.indexOf(item);
-      cartCopy[itemIndex].amount = cartCopy[itemIndex].amount - 1;
-      return cartCopy;
+      return cart.map((cartItem) => {
+        if (cartItem === item)
+          return { ...cartItem, amount: cartItem.amount - 1 };
+        else return cartItem;
+      });
     });
   }, []);
 
   const increaseCartAmount = useCallback((item) => {
     setCart((cart) => {
-      const cartCopy = [...cart];
-      const itemIndex = cartCopy.indexOf(item);
-      cartCopy[itemIndex].amount = cartCopy[itemIndex].amount + 1;
-      return cartCopy;
+      return cart.map((cartItem) => {
+        if (cartItem === item)
+          return { ...cartItem, amount: cartItem.amount + 1 };
+        else return cartItem;
+      });
     });
   }, []);
 
@@ -71,8 +69,18 @@ const App = memo(function App() {
   return (
     <>
       <nav>
+        <span>
+          {cart.length === 0
+            ? "No items"
+            : cart.length === 1
+            ? "1 item"
+            : cart.length + " items"}{" "}
+          in the cart.
+        </span>
         <Link to={"/cart"}>
-          <AiOutlineShoppingCart />
+          <button type="button">
+            <span>View Cart</span> <AiOutlineShoppingCart />{" "}
+          </button>
         </Link>
       </nav>
       <Outlet
@@ -84,6 +92,7 @@ const App = memo(function App() {
           cart,
           decreaseCartAmount,
           increaseCartAmount,
+          sortOrder,
         }}
       />
     </>

@@ -12,7 +12,6 @@ const ProductCard = memo(function Product({
   const isInCart = cart.some((product) => product.id === data.id);
 
   function handleCartAction(e) {
-    console.log(isInCart);
     e.preventDefault();
     if (!isInCart) return addToCart({ ...data, amount: 1 });
     else removeFromCart(data);

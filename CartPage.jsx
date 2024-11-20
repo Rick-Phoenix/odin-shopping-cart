@@ -18,6 +18,7 @@ const CartPage = memo(function CartPage() {
                 removeFromCart={removeFromCart}
                 decreaseCartAmount={decreaseCartAmount}
                 increaseCartAmount={increaseCartAmount}
+                cart={cart}
               />
             );
           })}

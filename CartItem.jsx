@@ -8,6 +8,7 @@ const CartItem = memo(function CartItem({
   removeFromCart,
   decreaseCartAmount,
   increaseCartAmount,
+  cart,
 }) {
   function handleDecreaseAmount(data) {
     if (data.amount === 1) return removeFromCart(data);
